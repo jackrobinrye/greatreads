@@ -13,7 +13,12 @@ class UsersController < ApplicationController
         else
             redirect '/signup'
         end
-
     end
+
+    get '/users/:id' do 
+        @user = User.find_by_id(params[:id])
+        @books = @user.books
+        erb :'/Users/user_books'
+    end 
 
 end 

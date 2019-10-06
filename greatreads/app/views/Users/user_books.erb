@@ -1,0 +1,12 @@
+<h1><%= @user.name %>'s Books</h1>
+<% @books.each do |book| %>
+<h2><%= book.title%></h2>
+<h3>By: <%= book.author%></h3>
+<h3>Genre: <%= book.genre%></h3>
+<% if book.read == true%>
+    <p><%= User.find_by_id(book.user_id).name %> has read this book already.</p>
+<% else %>
+    <p>This book is on <%= User.find_by_id(book.user_id).name%>'s to-read list.</p>
+<% end %>
+<br>
+<% end %>

@@ -1,1 +1,9 @@
-Show book
+<h2><%= @book.title %></h2>
+<h3>By <%= @book.author%></h3>
+<h3>Genre: <%= @book.genre%></h3>
+
+<% if @book.read == true%>
+<%= User.find_by_id(@book.user_id).name %> has read this book already.
+<% else %>
+This book is on <%= User.find_by_id(@book.user_id).name%>'s to-read list.
+<% end %>

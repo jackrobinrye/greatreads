@@ -5,6 +5,8 @@ class CreateBooksTable < ActiveRecord::Migration
       t.string :title
       t.string :author
       t.string :genre
+      t.boolean :read, :default => false
+      t.integer :user_id
     end 
   end
 

@@ -14,9 +14,11 @@
 ActiveRecord::Schema.define(version: 20191005003751) do
 
   create_table "books", force: :cascade do |t|
-    t.string "title"
-    t.string "author"
-    t.string "genre"
+    t.string  "title"
+    t.string  "author"
+    t.string  "genre"
+    t.boolean "read",    default: false
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

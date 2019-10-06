@@ -8,7 +8,18 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/" do
-    erb :welcome
+    erb :book_index
+  end
+
+
+  helpers do 
+    def logged_in?
+      !!session[:user_id]
+    end
+
+    def current_user
+      @user = User.find_by_id(session[:user_id])
+    end
   end
 
 end

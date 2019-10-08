@@ -2,8 +2,37 @@
 <h3>By <%= @book.author%></h3>
 <h3>Genre: <%= @book.genre%></h3>
 
-<% if @book.read == true%>
-<%= User.find_by_id(@book.user_id).name %> has read this book already.
+<% if current_user == @book.user %>
+    <% if @book.read == true%>
+        You read this book already.
+
+        <form action="/books/<%= @book.id %>/edit">
+            <input type="submit" value="Edit" />
+        </form>
+
+        <form method="POST" action="/books/<%= @book.id %>">
+            <input type="hidden"  name="_method" value="delete" />
+            <input type="submit" value="Delete" />
+        </form>
+
+        
+    <% else %>
+        This book is on your to-read list.
+
+        <form action="/books/<%= @book.id %>/edit">
+            <input type="submit" value="Edit" />
+        </form>
+
+        <form method="POST" action="/books/<%= @book.id %>">
+            <input type="hidden"  name="_method" value="delete" />
+            <input type="submit" value="Delete" />
+        </form>
+    <% end %>
 <% else %>
-This book is on <%= User.find_by_id(@book.user_id).name%>'s to-read list.
+    <% if @book.read == true%>
+        <%= User.find_by_id(@book.user_id).name %> has read this book already.
+    <% else %>
+        This book is on <%= User.find_by_id(@book.user_id).name%>'s to-read list.
+    <% end %>
 <% end %>
+

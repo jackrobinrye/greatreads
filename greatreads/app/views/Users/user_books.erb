@@ -1,12 +1,25 @@
-<h1><%= @user.name %>'s Books</h1>
+<h1 align="center"><%= @user.name %>'s Books</h1><br>
 <% @books.each do |book| %>
-<h2><%= book.title%></h2>
-<h3>By: <%= book.author%></h3>
-<h3>Genre: <%= book.genre%></h3>
-<% if book.read == true%>
-    <p><%= User.find_by_id(book.user_id).name %> has read this book already.</p>
-<% else %>
-    <p>This book is on <%= User.find_by_id(book.user_id).name%>'s to-read list.</p>
-<% end %>
-<br>
+    <h2><a href="/books/<%=book.id%>" color="navy"><i><%= book.title%></i></a></h2>
+    <h3>By: <%= book.author%></h3>
+    <h3>Genre: <%= book.genre%></h3>
+
+    <% if current_user == book.user %>
+        <% if book.read == true%>
+            You read this book already.
+        <% else %>
+            This book is on your to-read list.
+        <% end %>
+    <% else %>
+        <% if book.read == true%>
+            <%= User.find_by_id(book.user_id).name %> has read this book already.
+        <% else %>
+            This book is on <%= User.find_by_id(book.user_id).name%>'s to-read list.
+        <% end %><br>
+    <% end %>
+
+    <% if book.user == current_user %>
+        <a href="/books/<%= book.id %>/edit" color="teal">Edit</a><br>
+    <% end %>
+    <br><br>
 <% end %>

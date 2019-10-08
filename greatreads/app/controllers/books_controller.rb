@@ -19,7 +19,7 @@ class BooksController < ApplicationController
         # returns boolean to indicate whether or not passed 
         # validatoins and saved successfully
         if @book.save
-            redirect "/books"
+            redirect "/books/#{@book.id}"
         else
             redirect '/books/new'
         end
@@ -31,10 +31,39 @@ class BooksController < ApplicationController
     end 
 
     get '/books/:id/edit' do 
-        @book = Book.find_by_id(params[:id])
-        erb :"Books/edit"
+        book_user = Book.find_by_id(params[:id]).user
+        if book_user.id == current_user.id
+            @book = Book.find_by_id(params[:id])
+            erb :'Books/edit'
+        else 
+            redirect "/books"
+        end
     end 
 
+    patch "/books/:id" do 
+        book_user = Book.find_by_id(params[:id]).user
+        if book_user.id == current_user.id
+            @book = Book.find_by_id(params[:id])
+            # v what does this line do? v
+            params.delete("_method")
+            if @book.update(params)
+                redirect "/books/#{@book.id}"
+            else
+                redirect "/books/#{@book.id}/edit"
+            end
+        else
+            erb :"/books/#{params[:id]}"
+        end
+    end
 
+    delete '/books/:id' do
+        book_user = Book.find_by_id(params[:id]).user
+        if book_user.id == current_user.id
+            Book.destroy(params[:id])
+            redirect :'/books'
+        else
+            redirect :'/books'
+        end
+    end
     
 end 

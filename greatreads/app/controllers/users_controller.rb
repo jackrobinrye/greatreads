@@ -1,15 +1,20 @@
 class UsersController < ApplicationController
 
     get '/signup' do 
-        erb :'Users/signup'
+        if logged_in? != true
+            erb :'Users/signup'
+        else 
+            redirect "/users/#{current_user.id}"
+        end 
     end
 
+    #post from signup
     post '/users' do 
         @user = User.new(params)
 
         if @user.save
             session[:user_id] = @user.id
-            redirect "/posts"
+            redirect "/users/#{@user.id}"
         else
             redirect '/signup'
         end

@@ -10,14 +10,7 @@ class BooksController < ApplicationController
     end 
 
     post '/books' do 
-        # uses ActiveRecord associations to simultaneously
-        # create the new post and push it into the current_user's
-        # collection of posts
         @book = current_user.books.build(params)
-        
-        # triggers ActiveRecord validations on .save
-        # returns boolean to indicate whether or not passed 
-        # validatoins and saved successfully
         if @book.save
             redirect "/books/#{@book.id}"
         else
@@ -44,7 +37,6 @@ class BooksController < ApplicationController
         book_user = Book.find_by_id(params[:id]).user
         if book_user.id == current_user.id
             @book = Book.find_by_id(params[:id])
-            # v what does this line do? v
             params.delete("_method")
             if @book.update(params)
                 redirect "/books/#{@book.id}"
